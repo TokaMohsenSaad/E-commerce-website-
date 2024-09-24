@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details</title>
+    <link rel="stylesheet" href="path/to/your/styles.css" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f8f9fa;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 800px;
+        height: 50vh;
+        background-color: #fff;
+        padding: 2rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .product-details-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: space-between;
+      }
+
+      .product-image {
+        max-width: 50%;
+        height: auto;
+        border-radius: 50%;
+        border: 5px solid pink;
+      }
+
+      .product-details {
+        max-width: 50%;
+        padding-left: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #e83e8c;
+        font-family: "Arial", sans-serif;
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+
+      p {
+        margin: 0.5rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="product-details-container">
+        <img id="product-image" class="product-image" alt="Product Image" />
+        <div class="product-details" id="product-details"></div>
+      </div>
+    </div>
+    <script src="path/to/your/scripts.js"></script>
+    <script>
+      // Function to get URL parameters
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      // Fetch and display product details
+      const productId = getQueryParam("productId");
+      if (productId) {
+        fetch(`https://dummyjson.com/products/${productId}`)
+          .then((response) => response.json())
+          .then((product) => {
+            const productImageElement =
+              document.getElementById("product-image");
+            const productDetailsElement =
+              document.getElementById("product-details");
+
+            productImageElement.src = product.images[0];
+            productImageElement.alt = product.title;
+
+            productDetailsElement.innerHTML = `
+            <h2>${product.title}</h2>
+            <p>${product.description}</p>
+            <p><strong>Price:</strong> $${product.price}</p>
+            <p><strong>Rating:</strong> ${product.rating}</p>
+          `;
+          })
+          .catch((error) => {
+            console.error("Error fetching product details:", error);
+            const productDetailsElement =
+              document.getElementById("product-details");
+            productDetailsElement.innerHTML =
+              "<p>Error loading product details.</p>";
+          });
+      }
+    </script>
+  </body>
+</html>
